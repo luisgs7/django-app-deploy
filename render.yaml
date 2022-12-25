@@ -1,0 +1,20 @@
+databases:
+  - name: demo
+    databaseName: demo
+    user: demo
+
+services:
+  - type: web
+    name: demo
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn demo.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: demo
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
